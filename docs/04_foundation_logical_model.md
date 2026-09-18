@@ -2,6 +2,8 @@
 
 Identity is stored in `accounts`. Passenger and driver tables represent optional roles by reusing the account identifier as their primary key.
 
+The tables below summarize the current DDL. Unless a field has `NOT NULL` or is part of a primary key, it can be absent; a range or status check alone does not make a field required.
+
 ## `accounts`
 
 | Column | Rule |

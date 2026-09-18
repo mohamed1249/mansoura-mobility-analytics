@@ -53,6 +53,6 @@ The implemented schema contains 13 tables. Negotiation history, ride-event histo
 
 ## PostgreSQL enforcement
 
-The first schema directly protects primary keys, foreign keys, unique offer-to-ride mapping, driver-vehicle ownership, status domains, rating ranges, positive route baselines, attempt numbering, and provider-reference uniqueness.
+The first schema includes primary keys, foreign keys, unique offer-to-ride mapping, a composite driver-vehicle reference, status and rating checks, route-baseline checks, attempt numbering, and provider-reference uniqueness. Several columns remain nullable: checks validate supplied values but do not generally require them, and nullable foreign-key fields can bypass relationship checks.
 
 Lifecycle rules involving several tables remain transaction-level work, including accepted-offer verification, one active offer or ride per person, payment authorization before trip start, and refund totals below captured payment.

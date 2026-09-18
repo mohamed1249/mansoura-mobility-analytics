@@ -43,7 +43,7 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -e ".[notebooks,dev]"
-python -m pip install matplotlib
+python -m pip install matplotlib pyperclip
 python -m pip install "M_Ana_package[database] @ git+https://github.com/mohamed1249/M-Ana.git@main"
 Copy-Item .env.example .env
 ```
@@ -52,6 +52,7 @@ MAna is installed from its public GitHub source; no separate local checkout is n
 
 ```sql
 CREATE DATABASE mansoura_mobility;
+ALTER DATABASE mansoura_mobility SET timezone TO 'Africa/Cairo';
 ```
 
 Edit `.env` with your PostgreSQL host, port, database, username, and password. `.env.example` contains placeholders only. Do not commit real credentials.
@@ -81,7 +82,7 @@ Notebook 02 defaults to `LOAD_TO_POSTGRESQL = False`: generation without inserti
 
 Notebook 01 includes a **disabled** reset command that drops project tables. Leave it disabled to preserve data. Do not rerun schema creation against existing tables unless deliberately rebuilding.
 
-Notebook 04 is exploratory, not a final campaign launch recommendation or proof of causal effects.
+Notebook 04 is exploratory, not a final campaign launch recommendation or proof of causal effects. Its Stage 3 payment-secured count currently includes completed rides only, and its Stage 3 report-rate denominator uses completed rather than started rides. Those measures should not be treated as the defined business KPIs; Stage 5 calculates the started-ride report rate separately.
 
 ## Repository layout
 

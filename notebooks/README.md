@@ -9,7 +9,7 @@ Notebook structure:
 3. Result
 4. Short observation
 
-SQL performs joins, filtering, grouping, aggregation, ranking, window functions, and date calculations. Python handles connections, display, validation, plotting, benchmarking, and synthetic-data generation.
+SQL handles relational extraction, filtering, joins, related-record summaries, and timestamp calculations. Python handles connections, validation, synthetic generation, and the segment summaries and conditional formatting in notebook 04.
 
 - `00_connection_check.ipynb` verifies the local PostgreSQL configuration.
 - `01_build_database_model.ipynb` defines and inspects the first-version schema.

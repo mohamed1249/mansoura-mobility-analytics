@@ -1,6 +1,6 @@
 # Operational logical model
 
-This document describes the seven marketplace, trip, payment, rating, and report tables implemented after the six foundation tables.
+This document describes the seven operational tables after the six foundation tables. Many non-key fields are nullable. Status checks validate supplied values but do not establish a complete lifecycle, rating eligibility, payment settlement, or timestamp ordering.
 
 ## `offers`
 
@@ -13,7 +13,7 @@ An offer records one passenger contacting one driver before a ride exists.
 | `driver_id`, `vehicle_id` | Composite foreign key to a driver-owned vehicle. |
 | `pickup_zone_id` | Foreign key to `zones`. |
 | `dropoff_zone_id` | Foreign key to `zones` and different from pickup. |
-| `initial_fare_egp` | Positive initial fare. |
+| `initial_fare_egp` | Greater than 25 EGP when supplied; nullable. |
 | `offer_status` | `PENDING`, `NEGOTIATING`, `ACCEPTED`, `DECLINED`, `WITHDRAWN`, or `AUTO_CANCELLED`. |
 | `initiated_at` | Offer creation timestamp. |
 | `declined_by` | `PASSENGER`, `DRIVER`, or `SYSTEM` when applicable. |
@@ -32,14 +32,14 @@ A ride represents an accepted offer.
 | `offer_id` | Required unique foreign key to `offers`. |
 | `final_fare_egp` | Non-negative settled fare when present. |
 | `ride_status` | `AWAITING_PAYMENT`, `DRIVER_EN_ROUTE`, `READY_TO_START`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED_BEFORE_START`, or `TERMINATED_EARLY`. |
-| `started_at` | Current first-version start timestamp. |
+| `started_at` | Timezone-naive `TIMESTAMP` with a current-time default; not proof that a trip started. |
 | `start_distance_metres` | Non-negative proximity measurement. |
-| `completed_at` | Completion or ending timestamp when present. |
+| `completed_at` | Timezone-naive `TIMESTAMP` for completion or ending when present. |
 | `cancelled_by` | `PASSENGER`, `DRIVER`, or `SYSTEM`. |
 | `cancellation_reason` | Cancellation explanation. |
 | `cancellation_stage` | `BEFORE_DRIVER_ARRIVAL`, `AFTER_DRIVER_ARRIVAL`, or `DURING_RIDE`. |
 
-Ride milestone expansion and stricter lifecycle checks remain deferred. Acceptance of the referenced offer is enforced by the ride-creation transaction rather than a row-level check.
+Ride milestone expansion and stricter lifecycle checks remain deferred. Acceptance of the referenced offer is an intended rule, not enforced by the current foreign key. The generator creates consistent records, but arbitrary database writes can violate it; notebook 03 demonstrates this gap.
 
 ## `payment_attempts`
 
@@ -50,9 +50,9 @@ Ride milestone expansion and stricter lifecycle checks remain deferred. Acceptan
 | `attempt_number` | Positive number unique within a ride. |
 | `payment_method` | `CARD` or `WALLET`. |
 | `payment_status` | `INITIATED`, `AUTHORIZED`, `FAILED`, `CAPTURED`, or `RELEASED`. |
-| `requested_amount_egp` | Positive requested amount. |
-| `authorized_amount_egp` | Positive authorized amount when present. |
-| `captured_amount_egp` | Positive captured amount when present. |
+| `requested_amount_egp` | Greater than 25 EGP when supplied; nullable. |
+| `authorized_amount_egp` | Greater than 25 EGP when present. |
+| `captured_amount_egp` | Greater than 25 EGP when present. |
 | `provider_reference` | Unique payment-provider reference. |
 | `failure_reason` | Required by the status check after failure. |
 | `initiated_at` | Attempt creation timestamp. |

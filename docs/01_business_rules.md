@@ -2,6 +2,8 @@
 
 ## Scope
 
+These are intended business rules, not a claim that every rule is enforced by the current schema. Notebook 03 records enforcement gaps. Matching, live locations, and payment-provider operations are simulated or conceptual; there is no deployed ride-hailing application.
+
 Mansoura Mobility Analytics models a fictional ride marketplace around Mansoura, Talkha, and nearby areas in Dakahlia.
 
 - An offer records one passenger contacting one driver about a route, vehicle, and initial fare.
@@ -9,7 +11,7 @@ Mansoura Mobility Analytics models a fictional ride marketplace around Mansoura,
 - A passenger may have one open offer and one active ride at a time.
 - Driver offers are sequential in version one.
 - Currency is Egyptian pound (`EGP`) with two decimal places.
-- Operational instants use PostgreSQL `TIMESTAMPTZ` and `Africa/Cairo` business time.
+- The intended convention is `TIMESTAMPTZ` with `Africa/Cairo` business time. The current `rides.started_at` and `rides.completed_at` columns use timezone-naive `TIMESTAMP`; timezone consistency remains a schema limitation.
 - Names, contact details, and vehicle plates are synthetic.
 - Version one excludes cash, simultaneous offers, street-level GIS, per-second GPS storage, promotions, surge pricing, and multiple currencies.
 
@@ -36,10 +38,10 @@ Mansoura Mobility Analytics models a fictional ride marketplace around Mansoura,
 - One accepted offer creates at most one ride.
 - Ride statuses are `AWAITING_PAYMENT`, `DRIVER_EN_ROUTE`, `READY_TO_START`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED_BEFORE_START`, and `TERMINATED_EARLY`.
 - Terminal outcomes are `COMPLETED`, `CANCELLED_BEFORE_START`, and `TERMINATED_EARLY`.
-- `PAYMENT_FAILED` belongs to a payment attempt, not the ride lifecycle.
+- `FAILED` is a payment-attempt status, not a ride status.
 - The trip starts only after payment authorization, passenger confirmation, and a simulated passenger-driver distance of at most 100 metres.
 - Estimated distance, duration, and fare are not stored in version one.
-- A trip that ends after starting may retain partial actual distance and duration.
+- Actual trip distance and duration are not stored in the current schema; `start_distance_metres` measures passenger-driver proximity, not distance travelled.
 - The normal minimum charge after a trip starts is `25.00 EGP` before later refunds.
 - Reports remain separate from ride status.
 - A separate ride-event history is not stored in version one.
