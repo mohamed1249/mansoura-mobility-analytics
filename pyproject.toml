@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mansoura-mobility-analytics"
+version = "0.1.0"
+description = "A PostgreSQL-first learning project built around synthetic mobility data."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26,<3.0",
+    "pandas>=2.2,<3.0",
+    "psycopg2-binary>=2.9,<3.0",
+    "python-dotenv>=1.0,<2.0",
+    "sqlalchemy>=2.0,<3.0",
+]
+
+[project.optional-dependencies]
+notebooks = [
+    "ipykernel>=6.29,<7.0",
+    "jupyterlab>=4.2,<5.0",
+]
+dev = [
+    "pytest>=8.3,<9.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
