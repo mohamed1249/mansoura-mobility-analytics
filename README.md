@@ -34,7 +34,7 @@ Requirements:
 
 - Python 3.12 or newer for the current notebook syntax.
 - A running PostgreSQL server and permission to create a database. Development used PostgreSQL 15.
-- A local checkout of the separate **MAna** package with its `database` extras; it is not bundled here.
+- Git, used to install the separate **MAna** package from GitHub with its `database` extras.
 
 From the project directory in PowerShell:
 
@@ -44,11 +44,11 @@ python -m venv .venv
 python -m pip install --upgrade pip
 python -m pip install -e ".[notebooks,dev]"
 python -m pip install matplotlib
-python -m pip install -e "C:\path\to\MAna[database]"
+python -m pip install "M_Ana_package[database] @ git+https://github.com/mohamed1249/M-Ana.git@main"
 Copy-Item .env.example .env
 ```
 
-Replace the MAna path with your local checkout. Create an empty database using pgAdmin or `psql`:
+MAna is installed from its public GitHub source; no separate local checkout is needed. Create an empty database using pgAdmin or `psql`:
 
 ```sql
 CREATE DATABASE mansoura_mobility;
